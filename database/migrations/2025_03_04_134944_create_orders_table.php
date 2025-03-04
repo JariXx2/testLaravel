@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('customer_name')->nullable(false);
-            $table->timestamp('created_at')->default(\Carbon\Carbon::now());
             $table->enum('status', ['new','completed'])->default('new');
             $table->text("customer_comment")->nullable(false);
             $table->unsignedBigInteger("goods_id")->nullable(false);
