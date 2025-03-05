@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\GoodsController;
+use App\Http\Controllers\OrdersController;
 
 class PageController extends Controller
 {
     public function index() {
         
         $goodsController = new GoodsController();
-        $goodsData = $goodsController->index();
+        $ordersController = new OrdersController();
 
-        return view("welcome",compact("goodsData"));
+        $goodsData = $goodsController->index();
+        $ordersData = $ordersController->index();
+
+        return view("welcome",compact("goodsData","ordersData"));
     }
 }
