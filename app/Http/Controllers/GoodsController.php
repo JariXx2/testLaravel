@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Categories;
 
 class GoodsController extends Controller
 {
@@ -11,7 +12,7 @@ class GoodsController extends Controller
      */
     public function index()
     {
-        return ["test"=>1];
+        return ["test" => 1];
     }
 
     /**
@@ -60,5 +61,10 @@ class GoodsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getCategories()
+    {
+        return Categories::all();
     }
 }

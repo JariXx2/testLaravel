@@ -8,14 +8,16 @@ use App\Http\Controllers\OrdersController;
 
 class PageController extends Controller
 {
-    public function index() {
-        
+    public function index()
+    {
+
         $goodsController = new GoodsController();
         $ordersController = new OrdersController();
 
         $goodsData = $goodsController->index();
+        $categories = $goodsController->getCategories();
         $ordersData = $ordersController->index();
 
-        return view("welcome",compact("goodsData","ordersData"));
+        return view("welcome", compact("goodsData", "ordersData", "categories"));
     }
 }
