@@ -7,6 +7,6 @@
     </head>
     <body class="">
         <h1>Добро пожаловать на наш сайт!</h1>
-
+        {{$goodsData["test"]}}
     </body>
 </html>
