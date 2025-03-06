@@ -9,6 +9,7 @@ use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\DeleteOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Requests\ShowOrderRequest;
+use App\Http\Requests\ExecuteOrderRequest;
 
 class OrdersController extends Controller
 {
@@ -97,7 +98,6 @@ class OrdersController extends Controller
         $order->update($request->validated());
 
         return response()->json(['message' => 'Заказ успешно обновлен'], 200);
-        
     }
 
     /**
@@ -117,5 +117,21 @@ class OrdersController extends Controller
         return response()->json(['message' => 'Заказ успешно удален'], 200);
     }
 
-    
+    public function execute(ExecuteOrderRequest $request)
+    {
+        $id = $request->input('id');
+        $order = Orders::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Заказ не найден'], 404);
+        }
+
+        if ($order->status === 'new') {
+            $order->status = 'completed';
+        }
+
+        $order->save();
+
+        return response()->json(['message' => 'Статус заказа обновлен'], 200);
+    }
 }

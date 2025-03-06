@@ -430,7 +430,7 @@ function detGood(id) {
 }
 
 function exeOrder(id) {
-    fetch("/orders/exe", {
+    fetch("/orders/execute", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
