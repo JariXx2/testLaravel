@@ -382,6 +382,44 @@ function updGood(id) {
     });
 }
 
+function saveChangesGood(id) {
+    const updGoodName = document.getElementById("updGoodName").value;
+    const updGoodDescription = document.getElementById("updGoodDescription").value;
+    const updGoodPrice = document.getElementById("updGoodPrice").value;
+    const updGoodCategoryId = document.getElementById("updGoodCategory").value;
+
+    fetch("/goods/update", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+            name: updGoodName,
+            description: updGoodDescription,
+            price: updGoodPrice,
+            category_id: updGoodCategoryId
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при сохранении изменений");
+        }
+    })
+    .then((data) => {
+        console.log(data);
+        reloadData();
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
+}
+
 function saveChangesOrder(id) {
     console.log(id);
     const updOrderName = document.getElementById("updOrderName").value;
@@ -426,7 +464,73 @@ function detOrder(id) {
 }
 
 function detGood(id) {
-    console.log(id);
+    fetch("/goods/show", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при получении данных");
+        }
+    })
+    .then((data) => {
+        const infoDiv = document.getElementById("infomationGoods");
+        infoDiv.innerHTML = "";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.textContent = `Название: ${data.name}`;
+
+        const descriptionDiv = document.createElement("p");
+        descriptionDiv.style.wordWrap = "break-word";
+        descriptionDiv.style.width = "100%"; 
+        descriptionDiv.textContent = `Описание: ${data.description}`;
+
+        const priceDiv = document.createElement("div");
+        priceDiv.textContent = `Цена: ${data.price}`;
+
+        infoDiv.appendChild(nameDiv);
+        infoDiv.appendChild(descriptionDiv);
+        infoDiv.appendChild(priceDiv);
+
+        fetch("/goods/categories", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+            },
+        })
+        .then((response) => response.json())
+        .then((categories) => {
+            const category = categories.find(
+                (category) => category.id === data.category_id
+            );
+            if (category) {
+                const categoryDiv = document.createElement("div");
+                categoryDiv.textContent = `Категория: ${category.name}`;
+                infoDiv.appendChild(categoryDiv);
+            } else {
+                console.error("Категория не найдена");
+            }
+        })
+        .catch((error) => {
+            console.error(error.message);
+        });
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
 }
 
 function exeOrder(id) {
