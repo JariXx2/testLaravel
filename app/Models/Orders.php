@@ -15,9 +15,9 @@ class Orders extends Model
         'customer_comment',
         'goods_id',
         'quantity',
-    ] ;
+    ];
 
-    public function goods()
+    public function good()
     {
         return $this->belongsTo(Goods::class);
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categories;
+use App\Models\Goods;
 
 class GoodsController extends Controller
 {
@@ -12,7 +13,17 @@ class GoodsController extends Controller
      */
     public function index()
     {
-        return ["test" => 1];
+        $goods = Goods::with("category")->get();
+
+        $goodsData = $goods->map(function ($good) {
+            return [
+                "id"=> $good->id,
+                "name" => $good->name, 
+                "price" => $good->price, 
+                "category" => $good->category ? $good->category->name : 'Не указана'
+            ];
+        });
+        return $goodsData;
     }
 
     /**

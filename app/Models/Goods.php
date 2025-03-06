@@ -14,15 +14,15 @@ class Goods extends Model
         'category_id',
         'description',
         'price',
-    ] ;
-
-    public function categories()
-    {
-        return $this->belongsTo(Categories::class);
-    }
+    ];
 
     public function orders()
     {
         return $this->hasMany(Orders::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Categories::class);
     }
 }

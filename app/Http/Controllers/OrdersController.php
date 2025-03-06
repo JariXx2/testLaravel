@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Orders;
+use App\Models\Goods;
 
 class OrdersController extends Controller
 {
@@ -11,7 +13,19 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        return ["test" => 2];
+        $orders = Orders::with('good')->get();
+
+        $ordersData = $orders->map(function ($order) {
+            $good = Goods::find($order->goods_id);
+            return [
+                "id" => $order->id,
+                "customer_name" => $order->customer_name,
+                "price" => $order->quantity * $good->price,
+                "dateOrder" => $order->created_at->format("Y-m-d H:i:s"),
+                "status" => $order->status,
+            ];
+        });
+        return $ordersData;
     }
 
     /**
