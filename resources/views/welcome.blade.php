@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/js/app.js'])
     <style>
         table {
@@ -115,7 +116,7 @@
                                 <td>{{$good['name']}}</td>
                                 <td>{{$good['price']}}</td>
                                 <td>{{$good['category']}}</td>
-                                <td><button>Удалить</button></td>
+                                <td><button onclick="delOrders({{$good['id']}})">Удалить</button></td>
                                 <td><button>Изменить</button></td>
                                 <td><button>Подробнее</button></td>
                             </tr>

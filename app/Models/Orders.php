@@ -17,7 +17,7 @@ class Orders extends Model
         'quantity',
     ];
 
-    public function good()
+    public function goods()
     {
         return $this->belongsTo(Goods::class);
     }

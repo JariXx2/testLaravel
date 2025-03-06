@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Categories;
 use App\Models\Goods;
+use App\Http\Requests\CreateGoodRequest;
+use App\Http\Requests\DeleteGoodRequest;
+use App\Http\Requests\UpdateGoodRequest;
+use App\Http\Requests\ShowGoodRequest;
 
 class GoodsController extends Controller
 {
@@ -37,7 +41,7 @@ class GoodsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateGoodRequest $request)
     {
         //
     }
@@ -45,7 +49,7 @@ class GoodsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ShowGoodRequest $id)
     {
         //
     }
@@ -61,7 +65,7 @@ class GoodsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateGoodRequest $request)
     {
         //
     }
@@ -69,7 +73,7 @@ class GoodsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(DeleteGoodRequest $id)
     {
         //
     }
