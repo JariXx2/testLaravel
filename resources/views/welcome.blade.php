@@ -43,7 +43,7 @@
                             @endforeach
                         @endif
                     </select><br>
-                    <button>Добавить</button><br>
+                    <button  id="createOrderButton">Добавить</button><br>
                 </div>
                 <div id="informationOrders"></div>
             </div>
@@ -86,7 +86,6 @@
                     <input type="text" id="nameGoods"> <br>
                     <input type="number" name="" pattern="[0-9\.]+" id="priceGoods" step="0.01"><br>
                     <textarea name="" id="descriptionGoods"></textarea><br>
-                    <input type="text" id="priceGoods"><br>
                     <select id="selectCategories">
                         @if (count($categories) > 0)
                             @foreach ($categories as $category)
@@ -94,7 +93,7 @@
                             @endforeach  
                         @endif
                     </select><br>
-                    <button>Добавить</button><br>
+                    <button id="createGoodButton">Добавить</button><br>
                 </div>
                 <div id="infomationGoods">asdasdasdadsasd</div>
             </div>

@@ -11,7 +11,7 @@ class CreateOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,6 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'customer_name' => 'required|string',
-            'status' => 'required|string',
             'customer_comment' => 'nullable|string',
             'goods_id' => 'required|integer|exists:goods,id',
             'quantity' => 'required|integer|min:1',
@@ -35,8 +34,6 @@ class CreateOrderRequest extends FormRequest
         return [
             'customer_name.required' => 'Имя клиента обязательно',
             'customer_name.string' => 'Имя клиента должно быть строкой',
-            'status.required' => 'Статус заказа обязателен',
-            'status.string' => 'Статус должен быть строкой',
             'customer_comment.string' => 'Комментарий клиента должен быть строкой',
             'goods_id.required' => 'Id товара обязателен',
             'goods_id.exists' => 'Товар с таким id не найден',

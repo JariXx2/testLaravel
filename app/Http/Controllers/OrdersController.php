@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use App\Models\Orders;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\DeleteOrderRequest;
@@ -43,7 +44,17 @@ class OrdersController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+            $order = Orders::create($validatedData);
+
+            return response()->json(['message' => 'Товар успешно добавлен'], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json(['message' => 'Server error'], 500);
+        }
     }
 
     /**

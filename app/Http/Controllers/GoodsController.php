@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use App\Models\Categories;
 use App\Models\Goods;
 use App\Http\Requests\CreateGoodRequest;
@@ -21,9 +22,9 @@ class GoodsController extends Controller
 
         $goodsData = $goods->map(function ($good) {
             return [
-                "id"=> $good->id,
-                "name" => $good->name, 
-                "price" => $good->price, 
+                "id" => $good->id,
+                "name" => $good->name,
+                "price" => $good->price,
                 "category" => $good->category ? $good->category->name : 'Не указана'
             ];
         });
@@ -43,7 +44,17 @@ class GoodsController extends Controller
      */
     public function store(CreateGoodRequest $request)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+            $good = Goods::create($validatedData);
+
+            return response()->json(['message' => 'Товар успешно добавлен'], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json(['message' => 'Server error'], 500);
+        }
     }
 
     /**

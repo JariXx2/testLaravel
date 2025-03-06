@@ -22,9 +22,9 @@ class CreateGoodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => "required|stirng",
+            'name' => "required|string|unique:goods",
             'category_id' => 'required|integer|exists:categories,id',
-            'description' => 'nullble|string',
+            'description' => 'nullable|string',
             'price' => 'required|numeric'
         ];
     }
@@ -33,6 +33,7 @@ class CreateGoodRequest extends FormRequest
     {
         return [
             'name.required' => 'Наименование товара обязательно',
+            'name.unique' => 'Товар с таким наименованием уже существует',
             'category_id.required' => 'Категория товара обязательна',
             'category_id.exists' => 'Категория не найдена',
             'description.string' => 'Описание должно быть строкой',
