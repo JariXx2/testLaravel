@@ -384,7 +384,8 @@ function updGood(id) {
 
 function saveChangesGood(id) {
     const updGoodName = document.getElementById("updGoodName").value;
-    const updGoodDescription = document.getElementById("updGoodDescription").value;
+    const updGoodDescription =
+        document.getElementById("updGoodDescription").value;
     const updGoodPrice = document.getElementById("updGoodPrice").value;
     const updGoodCategoryId = document.getElementById("updGoodCategory").value;
 
@@ -401,7 +402,7 @@ function saveChangesGood(id) {
             name: updGoodName,
             description: updGoodDescription,
             price: updGoodPrice,
-            category_id: updGoodCategoryId
+            category_id: updGoodCategoryId,
         }),
     })
     .then((response) => {
@@ -460,7 +461,81 @@ function saveChangesOrder(id) {
 }
 
 function detOrder(id) {
-    console.log(id);
+    fetch("/orders/show", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при получении данных");
+        }
+    })
+    .then((data) => {
+        const infoDiv = document.getElementById("informationOrders");
+        infoDiv.innerHTML = "";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.textContent = `Имя клиента: ${data.customer_name}`;
+
+        const statusDiv = document.createElement("div");
+        statusDiv.textContent = `Статус: ${data.status}`;
+
+        const quantityDiv = document.createElement("div");
+        quantityDiv.textContent = `Количество: ${data.quantity}`;
+
+        const commentDiv = document.createElement("textarea");
+        commentDiv.readOnly = true;
+        commentDiv.style.resize = 'none'; 
+        commentDiv.style.width = '100%'; 
+        commentDiv.style.height = '100px'; 
+        commentDiv.value = `Комментарий: ${data.customer_comment}`;
+
+        fetch("/goods/show", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+            },
+            body: JSON.stringify({
+                id: data.goods_id,
+            }),
+        })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Ошибка при получении данных товара");
+            }
+        })
+        .then((goodData) => {
+            const goodsNameDiv = document.createElement("div");
+            goodsNameDiv.textContent = `Товар: ${goodData.name}`;
+
+            infoDiv.appendChild(nameDiv);
+            infoDiv.appendChild(statusDiv);
+            infoDiv.appendChild(quantityDiv);
+            infoDiv.appendChild(commentDiv);
+            infoDiv.appendChild(goodsNameDiv);
+        })
+        .catch((error) => {
+            console.error(error.message);
+        });
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
 }
 
 function detGood(id) {
@@ -490,10 +565,12 @@ function detGood(id) {
         const nameDiv = document.createElement("div");
         nameDiv.textContent = `Название: ${data.name}`;
 
-        const descriptionDiv = document.createElement("p");
-        descriptionDiv.style.wordWrap = "break-word";
-        descriptionDiv.style.width = "100%"; 
-        descriptionDiv.textContent = `Описание: ${data.description}`;
+        const descriptionDiv = document.createElement("textarea");
+        descriptionDiv.readOnly = true;
+        descriptionDiv.style.resize = "none";
+        descriptionDiv.style.width = "100%";
+        descriptionDiv.style.height = "100px";
+        descriptionDiv.value = `Описание: ${data.description}`;
 
         const priceDiv = document.createElement("div");
         priceDiv.textContent = `Цена: ${data.price}`;
