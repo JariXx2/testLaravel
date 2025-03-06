@@ -6,6 +6,7 @@ use App\Http\Controllers\GoodsController;
 use App\Http\Controllers\OrdersController;
 
 Route::get("/", [PageController::class, "index"]);
+
 Route::post('/keep-token-alive', function () {
     return response()->json(['message' => 'Token updated']);
 })->middleware('throttle:60,1');
@@ -16,6 +17,7 @@ Route::post("/goods/create", [GoodsController::class, "store"]);
 Route::post("/goods/show", [GoodsController::class, "show"]);
 Route::post("/goods/update", [GoodsController::class, "update"]);
 Route::post("/goods/delete", [GoodsController::class, "destroy"]);
+Route::post("/goods/categories", [GoodsController::class, "getCategories"]);
 
 Route::post("/orders/get", [OrdersController::class, "index"]);
 Route::post("/orders/create", [OrdersController::class, "store"]);

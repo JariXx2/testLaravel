@@ -18,7 +18,7 @@ class OrdersController extends Controller
     public function index()
     {
         $orders = Orders::with('goods')->get();
-     
+
         $ordersData = $orders->map(function ($order) {
             return [
                 "id" => $order->id,
@@ -60,9 +60,17 @@ class OrdersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ShowOrderRequest $id)
+    public function show(ShowOrderRequest $request)
     {
-        //
+        $id = $request->input('id');
+
+        $order = Orders::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Товар не найден'], 404);
+        }
+
+        return response()->json($order);
     }
 
     /**
@@ -78,7 +86,18 @@ class OrdersController extends Controller
      */
     public function update(UpdateOrderRequest $request)
     {
-        //
+        $id = $request->input('id');
+
+        $order = Orders::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Заказ не найден'], 404);
+        }
+
+        $order->update($request->validated());
+
+        return response()->json(['message' => 'Заказ успешно обновлен'], 200);
+        
     }
 
     /**

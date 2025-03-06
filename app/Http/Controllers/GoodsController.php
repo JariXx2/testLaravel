@@ -60,9 +60,17 @@ class GoodsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ShowGoodRequest $id)
+    public function show(ShowGoodRequest $request)
     {
-        //
+        $id = $request->input('id');
+
+        $good = Goods::find($id);
+
+        if (!$good) {
+            return response()->json(['message' => 'Товар не найден'], 404);
+        }
+
+        return response()->json($good);
     }
 
     /**
@@ -78,7 +86,16 @@ class GoodsController extends Controller
      */
     public function update(UpdateGoodRequest $request)
     {
-        //
+        $id = $request->input('id');
+        $good = Goods::find($id);
+
+        if (!$good) {
+            return response()->json(['message' => 'Товар не найден'], 404);
+        }
+
+        $good->update($request->validated());
+
+        return response()->json(['message' => 'Товар успешно обновлен'], 200);
     }
 
     /**

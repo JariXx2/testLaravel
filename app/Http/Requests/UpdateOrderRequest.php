@@ -11,7 +11,7 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,6 @@ class UpdateOrderRequest extends FormRequest
         return [
             'id' => 'required|integer|exists:orders,id',
             'customer_name' => 'required|string',
-            'status' => 'required|string',
             'goods_id' => 'required|integer|exists:goods,id',
             'quantity' => 'required|integer|min:1',
             'customer_comment' => 'nullable|string',
@@ -39,8 +38,6 @@ class UpdateOrderRequest extends FormRequest
             'id.exists' => 'Заказ с таким id не найден',
             'customer_name.required' => 'Имя клиента обязательно',
             'customer_name.string' => 'Имя клиента должно быть строкой',
-            'status.required' => 'Статус заказа обязателен',
-            'status.string' => 'Статус должен быть строкой',
             'goods_id.required' => 'Id товара обязателен',
             'goods_id.exists' => 'Товар с таким id не найден',
             'quantity.required' => 'Количество должно быть указано',

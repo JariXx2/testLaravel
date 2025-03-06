@@ -43,9 +43,9 @@
                             @endforeach
                         @endif
                     </select><br>
-                    <button  id="createOrderButton">Добавить</button><br>
+                    <button id="createOrderButton">Добавить</button><br>
                 </div>
-                <div id="informationOrders"></div>
+                <div id="informationOrders" style="display: flex;flex-direction: column;"></div>
             </div>
             <table>
                 <thead>
@@ -95,7 +95,7 @@
                     </select><br>
                     <button id="createGoodButton">Добавить</button><br>
                 </div>
-                <div id="infomationGoods">asdasdasdadsasd</div>
+                <div id="infomationGoods" style="display: flex;flex-direction: column;">asdasdasdadsasd</div>
             </div>
             <table>
                 <thead>

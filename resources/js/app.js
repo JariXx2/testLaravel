@@ -156,11 +156,219 @@ function delGood(id) {
 }
 
 function updOrder(id) {
-    console.log(id);
+    const inputsDiv = document.getElementById("informationOrders");
+    inputsDiv.innerHTML = "";
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.id = "updOrderName";
+    nameInput.placeholder = "Введите новое имя";
+
+    const countInput = document.createElement("input");
+    countInput.type = "number";
+    countInput.id = "updOrderCount";
+    countInput.placeholder = "Введите новое количество";
+
+    const commentInput = document.createElement("textarea");
+    commentInput.id = "updOrderComment";
+    commentInput.placeholder = "Введите новый комментарий";
+
+    const goodsSelect = document.createElement("select");
+    goodsSelect.id = "updOrderGoods";
+
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "Сохранить изменения";
+    saveButton.onclick = function () {
+        saveChangesOrder(id);
+    };
+
+    inputsDiv.appendChild(nameInput);
+    inputsDiv.appendChild(countInput);
+    inputsDiv.appendChild(commentInput);
+    inputsDiv.appendChild(goodsSelect);
+    inputsDiv.appendChild(saveButton);
+
+    fetch("/goods/get", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+    })
+    .then((response) => response.json())
+    .then((goods) => {
+        goods.forEach((good) => {
+            const option = document.createElement("option");
+            option.value = good.id;
+            option.textContent = good.name;
+            goodsSelect.appendChild(option);
+        });
+    });
+
+    fetch(`/orders/show`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при получении данных");
+        }
+    })
+    .then((data) => {
+        nameInput.value = data.customer_name;
+        countInput.value = data.quantity;
+        commentInput.value = data.customer_comment;
+
+        const currentGoodsOption = goodsSelect.querySelector(
+            `option[value="${data.goods_id}"]`
+        );
+        if (currentGoodsOption) {
+            currentGoodsOption.selected = true;
+        }
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
 }
 
 function updGood(id) {
-    console.log(id);
+    const infoDiv = document.getElementById("infomationGoods");
+    infoDiv.innerHTML = "";
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.id = "updGoodName";
+    nameInput.placeholder = "Введите новое название";
+
+    const descriptionInput = document.createElement("textarea");
+    descriptionInput.id = "updGoodDescription";
+    descriptionInput.placeholder = "Введите новое описание";
+
+    const priceInput = document.createElement("input");
+    priceInput.type = "number";
+    priceInput.id = "updGoodPrice";
+    priceInput.step = "0.01";
+    priceInput.placeholder = "Введите новую цену";
+
+    const categorySelect = document.createElement("select");
+    categorySelect.id = "updGoodCategory";
+
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "Сохранить изменения";
+    saveButton.onclick = function () {
+        saveChangesGood(id);
+    };
+
+    infoDiv.appendChild(nameInput);
+    infoDiv.appendChild(descriptionInput);
+    infoDiv.appendChild(priceInput);
+    infoDiv.appendChild(categorySelect);
+    infoDiv.appendChild(saveButton);
+
+    fetch("/goods/categories", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+    })
+    .then((response) => response.json())
+    .then((categories) => {
+        categories.forEach((category) => {
+            const option = document.createElement("option");
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+    });
+
+    fetch(`/goods/show`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при получении данных");
+        }
+    })
+    .then((data) => {
+        nameInput.value = data.name;
+        descriptionInput.value = data.description;
+        priceInput.value = data.price;
+
+        const currentCategoryOption = categorySelect.querySelector(
+            `option[value="${data.category_id}"]`
+        );
+        if (currentCategoryOption) {
+            currentCategoryOption.selected = true;
+        }
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
+}
+
+function saveChangesOrder(id) {
+    console.log(id)
+    const updOrderName = document.getElementById("updOrderName").value;
+    const updOrderCount = document.getElementById("updOrderCount").value;
+    const updOrderComment = document.getElementById("updOrderComment").value;
+    const updOrderGoodsId = document.getElementById("updOrderGoods").value;
+
+    fetch("/orders/update", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+            customer_name: updOrderName,
+            quantity: updOrderCount,
+            customer_comment: updOrderComment,
+            goods_id: updOrderGoodsId,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при сохранении изменений");
+        }
+    })
+    .then((data) => {
+        console.log(data);
+        reloadData();
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
 }
 
 function detOrder(id) {
