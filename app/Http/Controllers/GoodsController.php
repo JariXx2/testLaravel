@@ -101,9 +101,18 @@ class GoodsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DeleteGoodRequest $id)
+    public function destroy(DeleteGoodRequest $request)
     {
-        //
+        $id = $request->input('id');
+        $good = Goods::find($id);
+
+        if (!$good) {
+            return response()->json(['message' => 'Товар не найден'], 404);
+        }
+
+        $good->delete();
+
+        return response()->json(['message' => 'Товар успешно удален'], 200);
     }
 
     public function getCategories()

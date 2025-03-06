@@ -105,6 +105,17 @@ class OrdersController extends Controller
      */
     public function destroy(DeleteOrderRequest $request)
     {
-        //
+        $id = $request->input('id');
+        $order = Orders::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Заказ не найден'], 404);
+        }
+
+        $order->delete();
+
+        return response()->json(['message' => 'Заказ успешно удален'], 200);
     }
+
+    
 }

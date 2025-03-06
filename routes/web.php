@@ -24,3 +24,4 @@ Route::post("/orders/create", [OrdersController::class, "store"]);
 Route::post("/orders/show", [OrdersController::class, "show"]);
 Route::post("/orders/update", [OrdersController::class, "update"]);
 Route::post("/orders/delete", [OrdersController::class, "destroy"]);
+Route::post("/orders/exe", [OrdersController::class,""]);

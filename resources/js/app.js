@@ -148,11 +148,61 @@ async function reloadData() {
 }
 
 function delOrder(id) {
-    console.log(id);
+    fetch("/orders/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при удалении заказа");
+        }
+    })
+    .then((data) => {
+        console.log(data);
+        reloadData();
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
 }
 
 function delGood(id) {
-    console.log(id);
+    fetch("/goods/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при удалении заказа");
+        }
+    })
+    .then((data) => {
+        console.log(data);
+        reloadData();
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
 }
 
 function updOrder(id) {
@@ -333,7 +383,7 @@ function updGood(id) {
 }
 
 function saveChangesOrder(id) {
-    console.log(id)
+    console.log(id);
     const updOrderName = document.getElementById("updOrderName").value;
     const updOrderCount = document.getElementById("updOrderCount").value;
     const updOrderComment = document.getElementById("updOrderComment").value;
@@ -380,7 +430,32 @@ function detGood(id) {
 }
 
 function exeOrder(id) {
-    console.log(id);
+    fetch("/orders/exe", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Ошибка при выполнении заказа");
+        }
+    })
+    .then((data) => {
+        console.log(data);
+        reloadData();
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
 }
 
 document
