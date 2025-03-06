@@ -61,7 +61,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbodyOrders">
                     @if (count($ordersData) > 0)
                         @foreach ($ordersData as $order)
                             <tr>
@@ -109,7 +109,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbodyGoods">
                     @if (count($goodsData) > 0)
                         @foreach ($goodsData as $good)
                             <tr>
