@@ -487,6 +487,9 @@ function detOrder(id) {
         const nameDiv = document.createElement("div");
         nameDiv.textContent = `Имя клиента: ${data.customer_name}`;
 
+        const dateDiv = document.createElement("div");
+        dateDiv.textContent = `Дата создания: ${(new Date(data.created_at).toISOString().replace('T',' '.split('.'))).split('.')[0]}`;
+
         const statusDiv = document.createElement("div");
         statusDiv.textContent = `Статус: ${data.status}`;
 
@@ -495,9 +498,9 @@ function detOrder(id) {
 
         const commentDiv = document.createElement("textarea");
         commentDiv.readOnly = true;
-        commentDiv.style.resize = 'none'; 
-        commentDiv.style.width = '100%'; 
-        commentDiv.style.height = '100px'; 
+        commentDiv.style.resize = "none";
+        commentDiv.style.width = "100%";
+        commentDiv.style.height = "100px";
         commentDiv.value = `Комментарий: ${data.customer_comment}`;
 
         fetch("/goods/show", {
@@ -524,6 +527,7 @@ function detOrder(id) {
             goodsNameDiv.textContent = `Товар: ${goodData.name}`;
 
             infoDiv.appendChild(nameDiv);
+            infoDiv.appendChild(dateDiv);
             infoDiv.appendChild(statusDiv);
             infoDiv.appendChild(quantityDiv);
             infoDiv.appendChild(commentDiv);
